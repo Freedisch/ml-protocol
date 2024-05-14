@@ -1,5 +1,4 @@
-Here's a suggested README.md content for your GitHub repository hosting the transfer learning assignment using the Breast Cancer Dataset. This README will provide an overview of the project, its structure, and usage instructions.
-
+This GitHub repository is hosting the transfer learning assignment using the Breast Cancer Dataset.
 ### README.md Content
 
 ```markdown
