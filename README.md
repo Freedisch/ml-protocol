@@ -1,42 +1,28 @@
 This GitHub repository is hosting the transfer learning assignment using the Breast Cancer Dataset.
 ### README.md Content
 
-```markdown
+
 # Breast Cancer Image Classification using Transfer Learning
-
-This project applies transfer learning to classify ultrasound images of breast tissue into three categories: benign, malignant, and normal. It leverages pre-trained models from the Keras library, modifies them for the specific task, and evaluates their performance based on several metrics.
-
-## Project Structure
-
-- `Transfer_Learning_Assignment.ipynb`: Jupyter notebook containing the full pipeline from data loading and preprocessing to model training and evaluation.
-- `models/`: Directory where trained models are saved.
 
 ## Dataset
 
-The dataset used in this project consists of ultrasound images of breast tissue categorized into three classes: benign, malignant, and normal. Each class contains images along with corresponding segmentation masks, though this project currently focuses only on classification.
+The dataset contains images related to bread cancer. Each image has a corresponding mask image.
 
-## Models Used
+## Pre-trained Models
 
-The following pre-trained models from the TensorFlow Keras library were used and fine-tuned:
+We selected the following pre-trained models:
 
-- **VGG16**: Known for its simplicity and effectiveness in image classification.
-- **ResNet50**: Utilizes residual connections to enable training of very deep networks.
-- **InceptionV3**: Known for handling variable image sizes and complexities due to its inception modules.
+- **VGG16**: Known for its simplicity and effectiveness in image classification tasks.
+- **ResNet50**: Utilizes residual learning, which allows training of very deep networks.
+- **InceptionV3**: Combines multiple filter sizes and network-in-network architectures, providing high accuracy.
 
-## Installation
+## Fine-Tuning
 
-To run this project, you will need Python installed on your machine, as well as the following Python libraries:
+We fine-tuned the models by modifying the top layers and training them on the dataset. The following layers were modified:
 
-- TensorFlow
-- NumPy
-- Matplotlib
-- Seaborn
-
-You can install these packages via pip:
-
-```bash
-pip install tensorflow numpy matplotlib seaborn
-```
+- **GlobalAveragePooling2D**: To reduce the feature maps.
+- **Dense (1024 units)**: Added for high-level features.
+- **Dense (1 unit)**: Output layer for binary classification with sigmoid activation.
 
 ## Usage
 
