@@ -1,6 +1,6 @@
 # English to Ewe Translation Model
 
-This repository contains the code and resources for a machine translation model that translates text from English to EWe. The model is built using TensorFlow and employs a sequence-to-sequence (Seq2Seq) architecture with LSTM layers. For better performance, you can use a Transformer-based model, but this implementation uses LSTM for simplicity.
+This repository contains the code and resources for a machine translation model that translates text from English to Ewe. The model is built using TensorFlow and employs a sequence-to-sequence (Seq2Seq) architecture with LSTM layers.
 
 ## Table of Contents
 
@@ -15,13 +15,13 @@ This repository contains the code and resources for a machine translation model 
 
 ## Overview
 
-Machine translation is the task of automatically converting text from one language to another. This project focuses on translating from English to [African Native Language]. The model is trained on a parallel corpus and leverages the Seq2Seq architecture with LSTM layers to perform the translation.
+Machine translation is the task of automatically converting text from one language to another. This project focuses on translating from English to Ewe. The model is trained on a parallel corpus and leverages the Seq2Seq architecture with LSTM layers to perform the translation.
 
 ## Data
 
 ### Data Collection
 
-The dataset should consist of parallel sentences in English and [African Native Language]. You can collect data from various sources such as books, websites, and translation projects. Ensure that the dataset is cleaned and preprocessed for optimal performance.
+The dataset `EWE_ENGLISH.csv` consists of parallel sentences in English and Ewe. This dataset is essential for training the machine translation model.
 
 ### Preprocessing
 
@@ -31,63 +31,42 @@ The data preprocessing involves:
 - Removing special characters
 - Normalizing text
 
-This step is crucial to ensure the model learns effectively from the data.
+### Data Loading Example
+
+```python
+import pandas as pd
+
+file_path = '/mnt/data/EWE_ENGLISH.csv'
+
+# Attempt to read the CSV with error handling
+try:
+    data = pd.read_csv(file_path)
+except pd.errors.ParserError as e:
+    print(f"Error reading CSV: {e}")
+
+# Drop unnecessary columns
+data = data.drop(columns=['Unnamed: 0'])
+
+# Display the first few rows to verify data integrity
+data.head()
+```
 
 ## Model
 
 The model architecture is based on the Seq2Seq framework with LSTM layers. Here's a brief overview of the architecture:
 
 - **Encoder**: Converts input English sentences into context vectors.
-- **Decoder**: Converts context vectors into target [African Native Language] sentences.
+- **Decoder**: Converts context vectors into target Ewe sentences.
 - **Attention Mechanism**: Enhances the model by focusing on relevant parts of the input sentence during translation.
 
-## Training
-
-### Training Environment
-
-Ensure you have the necessary libraries installed. You can use the provided `requirements.txt` to set up your environment:
-
-```bash
-pip install -r requirements.txt
-```
-
-### Training the Model
-
-Use the following code to train the model:
+### Model Building Example
 
 ```python
+import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Embedding, LSTM, Dense
 from tensorflow.keras.models import Model
 
-# Placeholder for dataset loading and preprocessing
-def load_data():
-    # Load your parallel corpus here
-    return input_texts, target_texts
-
-input_texts, target_texts = load_data()
-
-# Tokenizer setup
-input_tokenizer = tf.keras.preprocessing.text.Tokenizer()
-target_tokenizer = tf.keras.preprocessing.text.Tokenizer()
-
-input_tokenizer.fit_on_texts(input_texts)
-target_tokenizer.fit_on_texts(target_texts)
-
-input_sequences = input_tokenizer.texts_to_sequences(input_texts)
-target_sequences = target_tokenizer.texts_to_sequences(target_texts)
-
-max_input_len = max(len(seq) for seq in input_sequences)
-max_target_len = max(len(seq) for seq in target_sequences)
-
-input_vocab_size = len(input_tokenizer.word_index) + 1
-target_vocab_size = len(target_tokenizer.word_index) + 1
-
-# Pad sequences
-input_sequences = tf.keras.preprocessing.sequence.pad_sequences(input_sequences, maxlen=max_input_len, padding='post')
-target_sequences = tf.keras.preprocessing.sequence.pad_sequences(target_sequences, maxlen=max_target_len, padding='post')
-
-# Define the model
 def build_model(input_vocab_size, target_vocab_size, embedding_dim=256, units=512):
     encoder_inputs = Input(shape=(None,))
     enc_emb = Embedding(input_vocab_size, embedding_dim)(encoder_inputs)
@@ -109,14 +88,21 @@ def build_model(input_vocab_size, target_vocab_size, embedding_dim=256, units=51
 model = build_model(input_vocab_size, target_vocab_size)
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
 model.summary()
+```
 
-# Training
+## Training
+
+The model is trained with the specified batch size and epochs. Validation split is used to evaluate performance during training.
+
+### Training Example
+
+```python
 batch_size = 64
 epochs = 50
 
 target_sequences_input = target_sequences[:, :-1]
 target_sequences_output = target_sequences[:, 1:]
-target_sequences_output = tf.expand_dims(target_sequences_output, -1)
+target_sequences_output = np.expand_dims(target_sequences_output, -1)
 
 history = model.fit([input_sequences, target_sequences_input], target_sequences_output,
                     batch_size=batch_size, epochs=epochs, validation_split=0.2)
@@ -131,13 +117,11 @@ The model can be evaluated using metrics like BLEU and METEOR. These metrics hel
 
 ## Usage
 
-After training, you can use the model for inference. Here is an example of how to use the trained model to translate English text to [African Native Language]:
+After training, you can use the model for inference. Here is an example of how to use the trained model to translate English text to Ewe:
+
+### Translation Example
 
 ```python
-# Load the model
-model = tf.keras.models.load_model('nmt_model.h5')
-
-# Function to translate new sentences
 def translate(sentence, model, input_tokenizer, target_tokenizer, max_input_len, max_target_len):
     sequence = input_tokenizer.texts_to_sequences([sentence])
     sequence = tf.keras.preprocessing.sequence.pad_sequences(sequence, maxlen=max_input_len, padding='post')
@@ -149,14 +133,14 @@ def translate(sentence, model, input_tokenizer, target_tokenizer, max_input_len,
 # Example usage
 sentence = "Hello, how are you?"
 translation = translate(sentence, model, input_tokenizer, target_tokenizer, max_input_len, max_target_len)
-print(translation)
+print(f'Translation: {translation}')
 ```
 
 ## Dependencies
 
 - TensorFlow
 - NumPy
-- Other dependencies listed in `requirements.txt`
+- Pandas
 
 Install dependencies using:
 
@@ -167,5 +151,3 @@ pip install -r requirements.txt
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
