@@ -1,10 +1,6 @@
-Here’s a README for the English to [African Native Language] translation model:
-
----
-
 # English to Ewe Translation Model
 
-This repository contains the code and resources for a machine translation model that translates text from English to [African Native Language]. The model is built using TensorFlow and employs a sequence-to-sequence (Seq2Seq) architecture with LSTM layers. For better performance, you can use a Transformer-based model, but this implementation uses LSTM for simplicity.
+This repository contains the code and resources for a machine translation model that translates text from English to EWe. The model is built using TensorFlow and employs a sequence-to-sequence (Seq2Seq) architecture with LSTM layers. For better performance, you can use a Transformer-based model, but this implementation uses LSTM for simplicity.
 
 ## Table of Contents
 
