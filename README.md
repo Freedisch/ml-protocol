@@ -1,7 +1,3 @@
-This GitHub repository is hosting the transfer learning assignment using the Breast Cancer Dataset.
-### README.md Content
-
-
 # Breast Cancer Image Classification using Transfer Learning
 
 ## Dataset
